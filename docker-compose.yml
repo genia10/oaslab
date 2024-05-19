@@ -1,0 +1,103 @@
+version: "3.5"
+services:
+
+  vmagent:
+    container_name: vmagent
+    image: victoriametrics/vmagent:v1.94.0
+    depends_on:
+      - "victoriametrics"
+    ports:
+      - 8429:8429
+    volumes:
+      - vmagentdata:/vmagentdata
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "--remoteWrite.url=http://victoriametrics:8428/api/v1/write"
+    networks:
+      - vm_net
+    restart: always
+  victoriametrics:
+    container_name: victoriametrics
+    image: victoriametrics/victoria-metrics:v1.94.0
+    ports:
+      - 8428:8428
+      - 8089:8089
+      - 8089:8089/udp
+      - 2003:2003
+      - 2003:2003/udp
+      - 4242:4242
+    volumes:
+      - vmdata:/storage
+    command:
+      - "--storageDataPath=/storage"
+      - "--graphiteListenAddr=:2003"
+      - "--opentsdbListenAddr=:4242"
+      - "--httpListenAddr=:8428"
+      - "--influxListenAddr=:8089"
+    networks:
+      - vm_net
+    restart: always
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:9.2.7
+    depends_on:
+      - "victoriametrics"
+      - "loki"
+      - "promtail"
+    ports:
+      - 3000:3000
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - ./provisioning/:/etc/grafana/provisioning/
+      - ./../../dashboards/victoriametrics.json:/var/lib/grafana/dashboards/vm.json
+      - ./../../dashboards/victorialogs.json:/var/lib/grafana/dashboards/vl.json
+      - ./../../dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
+      - ./../../dashboards/vmalert.json:/var/lib/grafana/dashboards/vmalert.json
+    networks:
+      - vm_net
+    restart: always
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+      - tempodata:/tmp/tempo
+    ports:
+      - "14268:14268"  # jaeger ingest
+      - "3200:3200"    # tempo
+      - "4317:4317"    # otlp grpc
+      - "4318:4318"    # otlp http
+      - "9411:9411"    # zipkin
+    #    network_mode: "host"
+    healthcheck:
+      test: [ "CMD", "grpc", "health", "check" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - vm_net
+  loki:
+    image: grafana/loki:2.9.0
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yaml:/etc/loki-config.yaml
+    command: -config.file=/etc/loki-config.yaml
+    networks:
+      - vm_net
+  promtail:
+    image: grafana/promtail:2.9.0
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail-config.yaml
+      - ./var/log:/var/log
+    command: -config.file=/etc/promtail-config.yaml
+    networks:
+      - vm_net
+volumes:
+  vmagentdata: {}
+  vmdata: {}
+  grafanadata: {}
+  tempodata: {}
+networks:
+  vm_net:

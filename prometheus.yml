@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: 'vmagent'
+    static_configs:
+      - targets: ['vmagent:8429']
+  - job_name: 'victoriametrics'
+    static_configs:
+      - targets: ['172.20.10.11:8428']
+ #     - targets: ['192.168.1.108:8428']
+  - job_name: 'book-api'
+    static_configs:
+      - targets: ['172.20.10.11:8080']
+#      - targets: ['192.168.1.108:8080']
+
+
