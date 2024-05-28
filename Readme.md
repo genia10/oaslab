@@ -1,7 +1,7 @@
-из основной директории docker compose up\
-сервер python -m swagger_server \
-клиент python start.py \
+РёР· РѕСЃРЅРѕРІРЅРѕР№ РґРёСЂРµРєС‚РѕСЂРёРё docker compose up\
+СЃРµСЂРІРµСЂ python -m swagger_server \
+РєР»РёРµРЅС‚ python start.py \
 
-http://localhost:8080/ui/ - UI для теста сервера \
-http://localhost:8080/metrics - метрики \
+http://localhost:8080/ui/ - UI РґР»СЏ С‚РµСЃС‚Р° СЃРµСЂРІРµСЂР° \
+http://localhost:8080/metrics - РјРµС‚СЂРёРєРё \
 http://localhost:3000 - grafana (admin - admin)
