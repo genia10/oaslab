@@ -4,4 +4,4 @@
 
 http://localhost:8080/ui/ - UI для теста сервера \
 http://localhost:8080/metrics - метрики \
-http://localhost:3000 - grafana (admin - admin)
+http://localhost:3000 - grafana (admin - admin) 
