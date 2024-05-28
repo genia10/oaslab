@@ -13,8 +13,8 @@ from prometheus_flask_exporter import PrometheusMetrics
 
 from swagger_server.controllers import default_controller
 
-logfile = os.path.abspath(os.curdir) + '/..//var/log/1.log'
-logging.basicConfig(filename=logfile, level=logging.INFO)
+#logfile = os.path.abspath(os.curdir) + '/..//var/log/1.log'
+#logging.basicConfig(filename=logfile, level=logging.INFO)
 
 
 def main():
