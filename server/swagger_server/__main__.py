@@ -13,7 +13,7 @@ from prometheus_flask_exporter import PrometheusMetrics
 from swagger_server.controllers import default_controller
 
 
-logging.basicConfig(filename='E:/PyProects/oaslab/var/log/1.log', level=logging.INFO)
+logging.basicConfig(filename='E:/PyProects/oaslab/oaslab/var/log/1.log', level=logging.INFO)
 
 
 def main():
