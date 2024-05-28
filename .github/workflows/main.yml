@@ -1,0 +1,24 @@
+name: startup application
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+
+jobs:
+  server_update:
+      #needs: push_to_registry
+      name: Update server buy ssh
+      runs-on: ubuntu-latest
+      steps:
+        - name: Deploy
+          uses: easingthemes/ssh-deploy@main
+          with:
+            host: ${{ secrets.SERVER_HOST }}
+            port: 8081
+            username: ${{ secrets.USERNAME }}
+            password: ${{ secrets.PASSWORD }}
+            script_stop: true
+            script: bash deploy.sh
