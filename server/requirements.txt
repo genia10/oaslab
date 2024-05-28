@@ -5,3 +5,4 @@ setuptools >= 21.0.0
 swagger-ui-bundle >= 0.0.2
 opentelemetry-distro == 0.45b0
 opentelemetry-exporter-otlp == 1.24.0
+os

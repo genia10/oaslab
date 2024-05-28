@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import logging
+import os
 from pprint import pprint
 
 import connexion
@@ -12,8 +13,8 @@ from prometheus_flask_exporter import PrometheusMetrics
 
 from swagger_server.controllers import default_controller
 
-
-logging.basicConfig(filename='E:/PyProects/oaslab/oaslab/var/log/1.log', level=logging.INFO)
+logfile = os.path.abspath(os.curdir) + '/..//var/log/1.log'
+logging.basicConfig(filename=logfile, level=logging.INFO)
 
 
 def main():
