@@ -1,0 +1,14 @@
+connexion >= 2.6.0
+connexion[swagger-ui] == 2.14.2
+python_dateutil == 2.6.0
+setuptools >= 21.0.0
+swagger-ui-bundle >= 0.0.2
+certifi >= 14.05.14
+six >= 1.10
+python_dateutil >= 2.5.3
+setuptools >= 21.0.0
+urllib3 >= 1.15.1
+prometheus_client == 0.20.0
+prometheus_flask_exporter == 0.23.0
+opentelemetry-distro == 0.45b0
+opentelemetry-exporter-otlp == 1.24.0
