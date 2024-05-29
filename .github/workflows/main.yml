@@ -56,5 +56,8 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd harichev/server
+            kill -9 `cat save_pid.txt`
+            rm save_pid.txt
             source /home/goblins/harichev-venv/bin/activate
             nohup &python3 -m swagger_server.__main__ &
+            echo $! > save_pid.txt
