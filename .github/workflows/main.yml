@@ -42,7 +42,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd harichev/server
-            python -m pip install --upgrade pip
             pip install -r requirements.txt
             pip install prometheus_client
             pip install prometheus_flask_exporter
@@ -56,4 +55,4 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd harichev/server
-            python -m swagger_server.__main__ &
+            python3 -m swagger_server.__main__ &
