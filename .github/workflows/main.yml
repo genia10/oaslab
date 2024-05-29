@@ -42,6 +42,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd harichev/server
+            source /home/goblins/harichev-venv/bin/activate
             pip install -r requirements.txt
             pip install prometheus_client
             pip install prometheus_flask_exporter
@@ -55,4 +56,5 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd harichev/server
+            source /home/goblins/harichev-venv/bin/activate
             python3 -m swagger_server.__main__ &
