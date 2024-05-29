@@ -32,12 +32,7 @@ jobs:
           script: |
             cd harichev/
             docker compose down
-            docker compose up --build -d
-      - name: set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-          
+            docker compose up --build -d 
       - name: install server dependencies
         uses: appleboy/ssh-action@master
         with:
@@ -61,4 +56,4 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd harichev/server
-            python -m swagger_server.__main__ &
+            python3 -m swagger_server.__main__ &
