@@ -57,4 +57,4 @@ jobs:
           script: |
             cd harichev/server
             source /home/goblins/harichev-venv/bin/activate
-            python3 -m swagger_server.__main__ &
+            nohup &python3 -m swagger_server.__main__ &
