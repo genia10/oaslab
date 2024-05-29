@@ -8,17 +8,42 @@ on:
 
 
 jobs:
-  server_update:
+  #server_update:
       #needs: push_to_registry
-      name: Update server buy ssh
+      #name: Update server buy ssh
+      #runs-on: ubuntu-latest
+      #steps:
+        #- name: Deploy
+          #uses: appleboy/ssh-action@master
+          #with:
+            #host: ${{ secrets.HOST }}
+            #username: ${{ secrets.USERNAME }}
+            #password: ${{ secrets.PASSWORD }}
+            #targer: ${{ secrets.TARGET }}
+            #script_stop: true
+            #script: bash deploy.sh
+  deploy:
       runs-on: ubuntu-latest
       steps:
-        - name: Deploy
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.HOST }}
-            username: ${{ secrets.USERNAME }}
-            password: ${{ secrets.PASSWORD }}
-            targer: ${{ secrets.TARGET }}
-            script_stop: true
-            script: bash deploy.sh
+      - uses: actions/checkout@master
+      - name: copy code
+        uses: appleboy/scp-action@v0.1.7
+        with:
+         host: ${{ secrets.HOST }}
+         username: ${{ secrets.USERNAME }}
+         password: ${{ secrets.PASSWORD }}
+         port: ${{ secrets.PORT }}
+         source: "*"
+         target: harichev
+         rm: True
+      - name: run dockers
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd harichev/
+            docker-compose down
+            docker-compose up --build -d
