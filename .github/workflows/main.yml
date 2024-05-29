@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 
-jobs:
+jobs: 
   #server_update:
       #needs: push_to_registry
       #name: Update server buy ssh
