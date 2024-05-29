@@ -8,20 +8,6 @@ on:
 
 
 jobs: 
-  #server_update:
-      #needs: push_to_registry
-      #name: Update server buy ssh
-      #runs-on: ubuntu-latest
-      #steps:
-        #- name: Deploy
-          #uses: appleboy/ssh-action@master
-          #with:
-            #host: ${{ secrets.HOST }}
-            #username: ${{ secrets.USERNAME }}
-            #password: ${{ secrets.PASSWORD }}
-            #targer: ${{ secrets.TARGET }}
-            #script_stop: true
-            #script: bash deploy.sh
   deploy:
       runs-on: ubuntu-latest
       steps:
@@ -47,3 +33,32 @@ jobs:
             cd harichev/
             docker compose down
             docker compose up --build -d
+      - name: set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          
+      - name: install server dependencies
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd harichev/server
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+            pip install prometheus_client
+            pip install prometheus_flask_exporter
+        
+      - name: run Swagger
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd harichev/server
+            python -m swagger_server.__main__ &
